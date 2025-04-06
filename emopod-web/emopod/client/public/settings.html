@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOPOD - Настройки</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/settings.css">
+</head>
+<body class="settings-page">
+    <!-- Settings Header -->
+    <header class="settings-header">
+        <h1 class="settings-title">Настройки</h1>
+    </header>
+
+    <!-- Settings Content -->
+    <main class="settings-content">
+        <!-- Account Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Настройки аккаунта</h2>
+            </div>
+            <p class="section-description">Управление основной информацией вашего аккаунта</p>
+            <form class="settings-form" id="accountForm">
+                <div class="form-group">
+                    <label class="form-label" for="name">Имя</label>
+                    <input type="text" id="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="currentPassword">Текущий пароль</label>
+                    <input type="password" id="currentPassword" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="newPassword">Новый пароль</label>
+                    <input type="password" id="newPassword" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Подтвердите новый пароль</label>
+                    <input type="password" id="confirmPassword" class="form-input">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        Отмена
+                    </button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Notification Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Настройки уведомлений</h2>
+            </div>
+            <p class="section-description">Управление уведомлениями и оповещениями</p>
+            <form class="settings-form" id="notificationsForm">
+                <div class="toggle-group">
+                    <label class="toggle-label" for="emailNotifications">Email уведомления</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-group">
+                    <label class="toggle-label" for="pushNotifications">Push-уведомления</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pushNotifications">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-group">
+                    <label class="toggle-label" for="chatNotifications">Уведомления о новых сообщениях</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="chatNotifications">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        Сохранить настройки
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Privacy Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Настройки конфиденциальности</h2>
+            </div>
+            <p class="section-description">Управление настройками конфиденциальности и видимости</p>
+            <form class="settings-form" id="privacyForm">
+                <div class="form-group">
+                    <label class="form-label" for="profileVisibility">Видимость профиля</label>
+                    <div class="select-wrapper">
+                        <select id="profileVisibility" class="form-input select-input">
+                            <option value="public">Публичный</option>
+                            <option value="private">Приватный</option>
+                            <option value="friends">Только для друзей</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="activityVisibility">Видимость активности</label>
+                    <div class="select-wrapper">
+                        <select id="activityVisibility" class="form-input select-input">
+                            <option value="public">Публичная</option>
+                            <option value="private">Приватная</option>
+                            <option value="friends">Только для друзей</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        Сохранить настройки
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Danger Zone -->
+        <section class="settings-section">
+            <div class="danger-zone">
+                <h2 class="section-title">Опасная зона</h2>
+                <p class="section-description">Эти действия нельзя отменить. Пожалуйста, будьте осторожны.</p>
+                <div class="form-actions">
+                    <button type="button" class="danger-button" onclick="deleteAccount()">
+                        Удалить аккаунт
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Load settings when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                // Load account settings
+                const response = await fetch('/api/user', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const userData = await response.json();
+                document.getElementById('name').value = userData.name;
+                document.getElementById('email').value = userData.email;
+
+                // Load notification settings
+                const settingsResponse = await fetch('/api/settings', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (settingsResponse.ok) {
+                    const settings = await settingsResponse.json();
+                    document.getElementById('emailNotifications').checked = settings.emailNotifications;
+                    document.getElementById('pushNotifications').checked = settings.pushNotifications;
+                    document.getElementById('chatNotifications').checked = settings.chatNotifications;
+                    document.getElementById('profileVisibility').value = settings.profileVisibility;
+                    document.getElementById('activityVisibility').value = settings.activityVisibility;
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showError('Ошибка загрузки настроек');
+            }
+        });
+
+        // Handle form submissions
+        document.getElementById('accountForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('/api/user', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        currentPassword: document.getElementById('currentPassword').value,
+                        newPassword: document.getElementById('newPassword').value
+                    })
+                });
+
+                if (response.ok) {
+                    showSuccess('Настройки аккаунта успешно обновлены');
+                } else {
+                    throw new Error('Failed to update account settings');
+                }
+            } catch (error) {
+                console.error('Error updating account settings:', error);
+                showError('Ошибка обновления настроек аккаунта');
+            }
+        });
+
+        document.getElementById('notificationsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('/api/settings/notifications', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        emailNotifications: document.getElementById('emailNotifications').checked,
+                        pushNotifications: document.getElementById('pushNotifications').checked,
+                        chatNotifications: document.getElementById('chatNotifications').checked
+                    })
+                });
+
+                if (response.ok) {
+                    showSuccess('Настройки уведомлений успешно обновлены');
+                } else {
+                    throw new Error('Failed to update notification settings');
+                }
+            } catch (error) {
+                console.error('Error updating notification settings:', error);
+                showError('Ошибка обновления настроек уведомлений');
+            }
+        });
+
+        document.getElementById('privacyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('/api/settings/privacy', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        profileVisibility: document.getElementById('profileVisibility').value,
+                        activityVisibility: document.getElementById('activityVisibility').value
+                    })
+                });
+
+                if (response.ok) {
+                    showSuccess('Настройки конфиденциальности успешно обновлены');
+                } else {
+                    throw new Error('Failed to update privacy settings');
+                }
+            } catch (error) {
+                console.error('Error updating privacy settings:', error);
+                showError('Ошибка обновления настроек конфиденциальности');
+            }
+        });
+
+        async function deleteAccount() {
+            if (!confirm('Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.')) {
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('/api/user', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html';
+                } else {
+                    throw new Error('Failed to delete account');
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                showError('Ошибка удаления аккаунта');
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOPOD - История</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/main.js"></script>
+</head>
+<body class="bg-dark-blue text-white min-h-screen">
+    <div class="cursor"></div>
+    <div class="background-noise"></div>
+    <div class="background-waves"></div>
+
+    <header class="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🧠</span>
+                <h1 class="text-xl font-bold">EMOPOD</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/chat" class="nav-link">Чат</a>
+                <a href="/history" class="nav-link active">История</a>
+                <a href="/profile" class="nav-link">Профиль</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="logoutBtn" class="btn-secondary">Выйти</button>
+            </div>
+            <button class="md:hidden menu-toggle">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4">История диалогов</h2>
+                <p class="text-gray-300">Здесь вы можете просмотреть все ваши предыдущие разговоры</p>
+            </div>
+
+            <div id="chatsList" class="space-y-4">
+                <!-- Список чатов будет добавляться здесь -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mobile Menu
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+        
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('hidden');
+        });
+
+        // Load chat history
+        async function loadChatHistory() {
+            try {
+                const response = await fetch('/api/chat/history', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to load chat history');
+                
+                const chats = await response.json();
+                renderChats(chats);
+            } catch (error) {
+                console.error('Error loading chat history:', error);
+            }
+        }
+
+        function renderChats(chats) {
+            const container = document.getElementById('chatsList');
+            container.innerHTML = '';
+
+            chats.forEach(chat => {
+                const chatCard = document.createElement('div');
+                chatCard.className = 'glass-card p-6';
+                chatCard.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold">${new Date(chat.createdAt).toLocaleDateString('ru-RU')}</h3>
+                            <p class="text-gray-300">${chat.messages[0]?.content || 'Нет сообщений'}</p>
+                        </div>
+                        <a href="/chat?id=${chat._id}" class="btn-primary">Открыть</a>
+                    </div>
+                `;
+                container.appendChild(chatCard);
+            });
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        });
+
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login';
+        } else {
+            loadChatHistory();
+        }
+    </script>
+</body>
+</html> 

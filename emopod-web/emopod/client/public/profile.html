@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOPOD - Профиль</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/main.js"></script>
+</head>
+<body class="bg-dark-blue text-white min-h-screen">
+    <div class="cursor"></div>
+    <div class="background-noise"></div>
+    <div class="background-waves"></div>
+
+    <header class="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🧠</span>
+                <h1 class="text-xl font-bold">EMOPOD</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/chat" class="nav-link">Чат</a>
+                <a href="/history" class="nav-link">История</a>
+                <a href="/profile" class="nav-link active">Профиль</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="logoutBtn" class="btn-secondary">Выйти</button>
+            </div>
+            <button class="md:hidden menu-toggle">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4">Профиль пользователя</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 mb-2">Имя</label>
+                        <input type="text" id="nameInput" class="w-full bg-transparent border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-[#00FFFF]">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">Email</label>
+                        <input type="email" id="emailInput" class="w-full bg-transparent border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-[#00FFFF]" disabled>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">Новый пароль</label>
+                        <input type="password" id="passwordInput" class="w-full bg-transparent border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-[#00FFFF]">
+                    </div>
+                    <button id="saveBtn" class="btn-primary">Сохранить изменения</button>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="text-xl font-bold mb-4">Статистика</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-[#00FFFF]">0</p>
+                        <p class="text-gray-300">Всего диалогов</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-[#00FFFF]">0</p>
+                        <p class="text-gray-300">Сообщений</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-[#00FFFF]">0</p>
+                        <p class="text-gray-300">Дней использования</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mobile Menu
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+        
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('hidden');
+        });
+
+        // Load user profile
+        async function loadProfile() {
+            try {
+                const response = await fetch('/api/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to load profile');
+                
+                const profile = await response.json();
+                document.getElementById('nameInput').value = profile.name;
+                document.getElementById('emailInput').value = profile.email;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Save profile changes
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            try {
+                const name = document.getElementById('nameInput').value;
+                const password = document.getElementById('passwordInput').value;
+
+                const response = await fetch('/api/user/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        password: password || undefined
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to update profile');
+                
+                alert('Профиль успешно обновлен');
+                document.getElementById('passwordInput').value = '';
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Ошибка при обновлении профиля');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        });
+
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login';
+        } else {
+            loadProfile();
+        }
+    </script>
+</body>
+</html> 

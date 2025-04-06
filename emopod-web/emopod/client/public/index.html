@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOPOD - Эмоциональный помощник</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/main.js"></script>
+</head>
+<body class="min-h-screen">
+    <!-- Custom cursor -->
+    <div class="cursor"></div>
+
+    <!-- Background effects -->
+    <div class="bg-noise"></div>
+    <div class="wave"></div>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00FFFF] to-[#8A2BE2] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">EMOPOD</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="/chat" class="text-white hover:text-[#00FFFF] transition-colors flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        Чат
+                    </a>
+                    <a href="/history" class="text-white hover:text-[#00FFFF] transition-colors flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        История
+                    </a>
+                    <a href="/profile" class="text-white hover:text-[#00FFFF] transition-colors flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Профиль
+                    </a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-white hover:text-[#00FFFF] transition-colors">Войти</a>
+                    <a href="/register" class="btn-neon hover-scale">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="pt-32 pb-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6 neon-text">
+                    Ваш эмоциональный помощник
+                </h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    EMOPOD поможет вам разобраться в своих эмоциях и найти баланс в жизни.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="glass-card card-hover p-8">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00FFFF] to-[#8A2BE2] flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">Анализ эмоций</h3>
+                    <p class="text-gray-300">
+                        Получите глубокий анализ вашего эмоционального состояния и рекомендации по улучшению.
+                    </p>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="glass-card card-hover p-8">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00FFFF] to-[#8A2BE2] flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">Персональный чат</h3>
+                    <p class="text-gray-300">
+                        Общайтесь с ИИ-помощником, который всегда готов выслушать и поддержать.
+                    </p>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="glass-card card-hover p-8">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00FFFF] to-[#8A2BE2] flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">История диалогов</h3>
+                    <p class="text-gray-300">
+                        Сохраняйте и анализируйте ваши разговоры для лучшего понимания себя.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="mt-32">
+                <h2 class="text-4xl font-bold text-center mb-12 neon-text">❓ FAQ: Часто задаваемые вопросы</h2>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">🤔 Что такое EMOPOD и как он помогает справляться со стрессом?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD - это умная капсула эмоциональной регуляции, которая помогает отслеживать и анализировать ваше эмоциональное состояние. С помощью встроенных датчиков и ИИ-помощника, EMOPOD предоставляет персонализированные рекомендации для управления стрессом и улучшения эмоционального благополучия.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">🔌 Какие датчики используются внутри EMOPOD?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD оснащен современными датчиками, включая датчики пульса, температуры, влажности и движения. Эти датчики работают вместе для создания полной картины вашего эмоционального состояния.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">💡 Можно ли использовать капсулу дома или она только для школ/центров?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD разработан как для индивидуального использования дома, так и для применения в образовательных и медицинских учреждениях. Его компактный дизайн и простота использования делают его идеальным решением для любого пространства.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">📊 Как AI-помощник внутри EMOPOD помогает в самоанализе?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            ИИ-помощник анализирует данные с датчиков и ваши сообщения, чтобы выявить закономерности в вашем эмоциональном состоянии. Он предоставляет персонализированные рекомендации и помогает лучше понять свои эмоции.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">🧘 Есть ли в EMOPOD дыхательные упражнения и музыка для медитации?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            Да, EMOPOD включает в себя библиотеку дыхательных упражнений и успокаивающей музыки, которые помогают в медитации и релаксации. Все упражнения адаптируются под ваше текущее состояние.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 6 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">🌐 Работает ли EMOPOD без интернета?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD может работать в автономном режиме, сохраняя базовые функции и данные. Для полного функционала и синхронизации данных рекомендуется подключение к интернету.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 7 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">⚙️ Какие технологии используются в EMOPOD?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD построен на базе современных технологий, включая Raspberry Pi для обработки данных, Wi-Fi для подключения и различные датчики для мониторинга состояния.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 8 -->
+                    <div class="glass-card p-6">
+                        <button class="faq-toggle w-full text-left flex justify-between items-center">
+                            <span class="text-xl font-semibold gradient-text">🔋 Насколько автономен EMOPOD?</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-content mt-4 text-gray-300 hidden">
+                            EMOPOD оснащен мощной батареей, которой хватает на 24 часа работы. Также есть возможность подзарядки через USB-C и поддержка солнечных панелей для автономной работы.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-16">
+                <a href="/register" class="btn-neon hover-scale inline-flex items-center">
+                    <span>Начать использовать</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8">
+        <div class="container mx-auto px-4">
+            <p class="text-center text-gray-400">
+                &copy; 2024 EMOPOD. Все права защищены.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor functionality
+        const cursor = document.querySelector('.cursor');
+        const links = document.querySelectorAll('a, button, .glass-card, .faq-toggle');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // FAQ Accordion functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('svg');
+                
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+                
+                // Close other open items
+                document.querySelectorAll('.faq-toggle').forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.nextElementSibling.classList.add('hidden');
+                        otherButton.querySelector('svg').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

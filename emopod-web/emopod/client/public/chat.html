@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOPOD - Чат</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/chat.css">
+</head>
+<body class="chat-page">
+    <!-- Chat Header -->
+    <header class="chat-header">
+        <h1 class="chat-title">Чат с EMOPOD</h1>
+        <div class="chat-actions">
+            <a href="/history.html" class="text-gray-600 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </a>
+            <button onclick="logout()" class="text-gray-600 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat Container -->
+    <main class="chat-container">
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+            <!-- Messages will be added here dynamically -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <textarea
+                class="message-input"
+                id="messageInput"
+                placeholder="Введите ваше сообщение..."
+                rows="1"
+                onkeydown="handleKeyDown(event)"
+            ></textarea>
+            <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+                Отправить
+            </button>
+        </div>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let chatId = null;
+        let isTyping = false;
+
+        // Load chat when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Get chat ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            chatId = urlParams.get('id');
+
+            if (chatId) {
+                await loadChatHistory();
+            } else {
+                // Start new chat
+                chatId = await createNewChat();
+            }
+
+            // Auto-resize textarea
+            const textarea = document.getElementById('messageInput');
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            });
+        });
+
+        async function createNewChat() {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create new chat');
+                }
+
+                const data = await response.json();
+                return data.chatId;
+            } catch (error) {
+                console.error('Error creating new chat:', error);
+                showError('Ошибка создания нового чата');
+                return null;
+            }
+        }
+
+        async function loadChatHistory() {
+            try {
+                const response = await fetch(`/api/chat/${chatId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load chat history');
+                }
+
+                const data = await response.json();
+                renderMessages(data.messages);
+            } catch (error) {
+                console.error('Error loading chat history:', error);
+                showError('Ошибка загрузки истории чата');
+            }
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = '';
+
+            messages.forEach(message => {
+                const messageElement = createMessageElement(message);
+                container.appendChild(messageElement);
+            });
+
+            scrollToBottom();
+        }
+
+        function createMessageElement(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${message.sender === 'user' ? 'user' : 'ai'}`;
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = message.content;
+
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date(message.timestamp).toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            messageDiv.appendChild(content);
+            messageDiv.appendChild(time);
+
+            return messageDiv;
+        }
+
+        function showTypingIndicator() {
+            const container = document.getElementById('messagesContainer');
+            const indicator = document.createElement('div');
+            indicator.className = 'typing-indicator';
+            indicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            container.appendChild(indicator);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const container = document.getElementById('messagesContainer');
+            const indicator = container.querySelector('.typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (!message || isTyping) return;
+
+            try {
+                isTyping = true;
+                input.value = '';
+                input.style.height = 'auto';
+
+                // Add user message to chat
+                const userMessage = {
+                    sender: 'user',
+                    content: message,
+                    timestamp: new Date().toISOString()
+                };
+
+                const container = document.getElementById('messagesContainer');
+                container.appendChild(createMessageElement(userMessage));
+                scrollToBottom();
+
+                // Show typing indicator
+                showTypingIndicator();
+
+                // Send message to server
+                const response = await fetch('/api/chat/message', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chatId,
+                        message
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                }
+
+                const data = await response.json();
+
+                // Remove typing indicator
+                hideTypingIndicator();
+
+                // Add AI response to chat
+                const aiMessage = {
+                    sender: 'ai',
+                    content: data.response,
+                    timestamp: new Date().toISOString()
+                };
+
+                container.appendChild(createMessageElement(aiMessage));
+                scrollToBottom();
+            } catch (error) {
+                console.error('Error sending message:', error);
+                hideTypingIndicator();
+                showError('Ошибка отправки сообщения');
+            } finally {
+                isTyping = false;
+            }
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html> 

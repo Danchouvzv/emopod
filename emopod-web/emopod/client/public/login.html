@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в EMOPOD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <script src="/js/main.js"></script>
+</head>
+<body class="min-h-screen">
+    <!-- Custom cursor -->
+    <div class="cursor"></div>
+
+    <!-- Background effects -->
+    <div class="bg-noise"></div>
+    <div class="wave"></div>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00FFFF] to-[#8A2BE2] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">EMOPOD</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Form -->
+    <main class="container mx-auto px-4 py-20">
+        <div class="max-w-md mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4 neon-text">Вход в EMOPOD</h2>
+                <p class="text-gray-300">Войдите в свой аккаунт, чтобы продолжить</p>
+            </div>
+
+            <form id="loginForm" class="glass-card p-8 space-y-6">
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-4 py-3 rounded-2xl bg-[#0d0d2b] border border-gray-700 focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] focus:ring-opacity-50 transition-all duration-300"
+                            placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Пароль</label>
+                        <input type="password" id="password" name="password" required
+                            class="w-full px-4 py-3 rounded-2xl bg-[#0d0d2b] border border-gray-700 focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] focus:ring-opacity-50 transition-all duration-300"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember" type="checkbox" class="h-4 w-4 rounded border-gray-700 text-[#00FFFF] focus:ring-[#00FFFF]">
+                        <label for="remember" class="ml-2 block text-sm text-gray-300">Запомнить меня</label>
+                    </div>
+                    <a href="#" class="text-sm text-[#00FFFF] hover:text-[#8A2BE2] transition-colors">Забыли пароль?</a>
+                </div>
+
+                <button type="submit" class="w-full btn-neon hover-scale py-3 rounded-2xl font-semibold">
+                    Войти
+                </button>
+
+                <div class="text-center">
+                    <p class="text-gray-300">
+                        Нет аккаунта? 
+                        <a href="/register" class="text-[#00FFFF] hover:text-[#8A2BE2] transition-colors">Зарегистрироваться</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Custom cursor functionality
+        const cursor = document.querySelector('.cursor');
+        const links = document.querySelectorAll('a, button, input, .glass-card');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/chat';
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Ошибка входа');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Произошла ошибка при входе');
+            }
+        });
+    </script>
+</body>
+</html> 
